@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SevaSetu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/index.html" class="brand">SevaSetu</a>
+        <div class="nav-links">
+            <a href="/admin_dashboard.html" id="nav-dashboard">Dashboard</a>
+            <a href="#" id="nav-logout" class="btn-secondary">Logout</a>
+        </div>
+    </nav>
+
+    <div class="flash-messages" id="flash-messages"></div>
+
+    <main class="content">
+        <div class="dashboard-header">
+            <h2>Admin Dashboard</h2>
+            <p>Manage and track all public service complaints.</p>
+        </div>
+
+        <div class="card table-responsive">
+            <table class="admin-table" id="admin-complaints-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Citizen</th>
+                        <th>Details</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Status / Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Hardcoded single mock item -->
+                    <tr>
+                        <td>#1042</td>
+                        <td>
+                            <strong>John Doe</strong>
+                        </td>
+                        <td class="td-details">
+                            <div class="td-details-title">Water Pipe Burst</div>
+                            <div class="text-truncate" title="There is a huge water leak flooding the intersection.">There is a huge water leak flooding the i...</div>
+                            <a href="#" target="_blank" class="link-sm">View Image ↗</a>
+                        </td>
+                        <td>
+                            <a href="#" target="_blank" class="text-sm">View Map</a>
+                        </td>
+                        <td><small>Oct 24, 2026</small></td>
+                        <td>
+                            <div class="flex-actions">
+                                <select class="form-control form-control-sm" onchange="updateStatus(1042, this.value)">
+                                    <option value="Reported">Reported</option>
+                                    <option value="In Progress" selected>In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Empty state fallback that you can toggle with JS later
+            <div class="empty-state d-none" id="empty-state">
+                No complaints have been filed yet.
+            </div>
+            -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SevaSetu Civic Platform. All rights reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

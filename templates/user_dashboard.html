@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - SevaSetu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/index.html" class="brand">SevaSetu</a>
+        <div class="nav-links">
+            <a href="/user_dashboard.html" id="nav-dashboard">Dashboard</a>
+            <a href="/submit.html" id="nav-report" class="btn-primary">Report Issue</a>
+            <a href="#" id="nav-logout" class="btn-secondary">Logout</a>
+        </div>
+    </nav>
+
+    <div class="flash-messages" id="flash-messages"></div>
+
+    <main class="content">
+        <div class="dashboard-header">
+            <!-- Hardcoded for now -->
+            <h2>Welcome, Citizen</h2>
+            <a href="/submit.html" class="btn-primary">+ New Complaint</a>
+        </div>
+
+        <!-- The dashboard grid loaded with mock data -->
+        <div class="dashboard-grid" id="complaints-grid">
+            <!-- Hardcoded sample complaint card -->
+            <div class="complaint-card">
+                <div class="img-placeholder">
+                    No Image Provided
+                </div>
+                <div class="complaint-body">
+                    <h3 class="complaint-title">Broken Streetlight</h3>
+                    <p class="complaint-desc">The streetlight on 5th avenue has been broken for 3 weeks...</p>
+                    <div class="map-link-wrap">
+                        <a href="#" target="_blank">📍 View on Map</a>
+                    </div>
+                    <div class="complaint-meta">
+                        <span class="badge badge-In.Progress">In Progress</span>
+                        <span>Oct 24, 2026</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Empty state fallback that you can toggle with JS later
+            <div class="card empty-state-lg d-none" id="empty-state">
+                <h3 class="text-muted">You haven't reported any issues yet.</h3>
+                <p>Help us improve the city by reporting infrastructure problems.</p>
+                <a href="/submit.html" class="btn-primary">Report Your First Issue</a>
+            </div> 
+            -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SevaSetu Civic Platform. All rights reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
