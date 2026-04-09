@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SevaSetu - Civic Platform</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/index.html" class="brand">SevaSetu</a>
+        <div class="nav-links">
+            <a href="/user_dashboard.html" id="nav-dashboard">Dashboard</a>
+            <a href="/submit.html" id="nav-report" class="btn-primary">Report Issue</a>
+            <a href="/auth.html" id="nav-login">Login / Register</a>
+        </div>
+    </nav>
+
+    <!-- Empty container for JS flash messages -->
+    <div class="flash-messages" id="flash-messages"></div>
+
+    <main class="content">
+        <section class="hero">
+            <h1>Transforming the Way You Connect with Your City</h1>
+            <p>SevaSetu bridges the gap between citizens and authorities. Report infrastructure issues, track resolutions, and help build a better community for everyone.</p>
+            <div class="hero-actions">
+                <a href="/submit.html" class="btn-primary btn-lg">Report an Issue Now</a>
+                <a href="/user_dashboard.html" class="btn-secondary btn-lg">View Your Dashboard</a>
+                <a href="/auth.html" class="btn-primary btn-lg">Get Started</a>
+            </div>
+        </section>
+
+        <section class="features-grid">
+            <div class="card feature-card">
+                <h3 class="text-primary">1. Report</h3>
+                <p>Spot an issue? Be a responsible citizen. Upload a photo, pick a location on the map, and write a quick description.</p>
+            </div>
+            <div class="card feature-card">
+                <h3 class="text-warning">2. Track</h3>
+                <p>Monitor your report directly from your dashboard. See real-time status updates as authorities take action.</p>
+            </div>
+            <div class="card feature-card">
+                <h3 class="text-secondary">3. Resolve</h3>
+                <p>The relevant authority fixes the issue and marks it complete, creating a transparent ecosystem of public service.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SevaSetu Civic Platform. All rights reserved.</p>
+    </footer>
+
+    <!-- Leaflet Map Setup -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
