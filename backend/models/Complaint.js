@@ -11,6 +11,11 @@ const complaintSchema = new mongoose.Schema({
         required: true,
         enum: ['Road', 'Drainage', 'Street Light', 'Garbage', 'Water'],
     },
+    department: {
+        type: String,
+        required: true,
+        enum: ['Water', 'Electricity', 'Roads', 'Sanitation'],
+    },
     description: {
         type: String,
         required: true,
@@ -24,14 +29,15 @@ const complaintSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Pending', 'In Progress', 'Resolved'],
+        enum: ['Pending', 'In Progress', 'Resolved', 'Rejected'],
         default: 'Pending',
     },
-    resolutionNote: {
+    remark: {
         type: String,
     },
-    assignedTo: { // Could be a field worker in future, for now just a string or another user ref
-        type: String,
+    assignedTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     }
 }, { timestamps: true });
 

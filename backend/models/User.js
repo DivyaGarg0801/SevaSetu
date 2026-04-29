@@ -17,8 +17,12 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['citizen', 'admin'],
+        enum: ['citizen', 'admin', 'superadmin'],
         default: 'citizen',
+    },
+    department: {
+        type: String,
+        enum: ['Water', 'Electricity', 'Roads', 'Sanitation'],
     },
 }, { timestamps: true });
 

@@ -1,9 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const Complaint = require('../models/Complaint');
+const User = require('../models/User');
 const { protect, admin } = require('../middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
+
+const categoryToDepartment = {
+    Road: 'Roads',
+    Drainage: 'Sanitation',
+    'Street Light': 'Electricity',
+    Garbage: 'Sanitation',
+    Water: 'Water',
+};
 
 // Multer Config
 const storage = multer.diskStorage({
@@ -40,13 +49,22 @@ function checkFileType(file, cb) {
 router.post('/', protect, upload.single('image'), async (req, res) => {
     const { category, description, latitude, longitude } = req.body;
     const image = req.file ? req.file.path : null;
+    const department = categoryToDepartment[category];
+
+    if (!department) {
+        return res.status(400).json({ message: 'Invalid category selected' });
+    }
 
     try {
+        const departmentAdmin = await User.findOne({ role: 'admin', department }).sort({ createdAt: 1 });
+
         const complaint = new Complaint({
             user: req.user._id,
             category,
+            department,
             description,
             image,
+            assignedTo: departmentAdmin ? departmentAdmin._id : undefined,
             location: {
                 latitude,
                 longitude,
@@ -54,24 +72,43 @@ router.post('/', protect, upload.single('image'), async (req, res) => {
         });
 
         const createdComplaint = await complaint.save();
-        res.status(201).json(createdComplaint);
+        const populatedComplaint = await Complaint.findById(createdComplaint._id)
+            .populate('assignedTo', 'name email department')
+            .populate('user', 'name email');
+
+        res.status(201).json(populatedComplaint);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
 
 // @route   GET /api/complaints
-// @desc    Get all complaints (Admin) or User's complaints (Citizen)
+// @desc    Get complaints based on role and filters
 // @access  Private
 router.get('/', protect, async (req, res) => {
     try {
-        if (req.user.role === 'admin') {
-            const complaints = await Complaint.find({}).populate('user', 'name email');
-            res.json(complaints);
+        const { status, department } = req.query;
+        const filter = {};
+
+        if (req.user.role === 'superadmin') {
+            if (department) {
+                filter.department = department;
+            }
+        } else if (req.user.role === 'admin') {
+            filter.department = req.user.department;
         } else {
-            const complaints = await Complaint.find({ user: req.user._id });
-            res.json(complaints);
+            filter.user = req.user._id;
         }
+
+        if (status) {
+            filter.status = status;
+        }
+
+        const complaints = await Complaint.find(filter)
+            .populate('user', 'name email')
+            .populate('assignedTo', 'name email department');
+
+        res.json(complaints);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -81,20 +118,28 @@ router.get('/', protect, async (req, res) => {
 // @desc    Update complaint status
 // @access  Private/Admin
 router.put('/:id/status', protect, admin, async (req, res) => {
-    const { status, resolutionNote } = req.body;
+    const { status, remark } = req.body;
 
     try {
         const complaint = await Complaint.findById(req.params.id);
 
-        if (complaint) {
-            complaint.status = status || complaint.status;
-            complaint.resolutionNote = resolutionNote || complaint.resolutionNote;
-
-            const updatedComplaint = await complaint.save();
-            res.json(updatedComplaint);
-        } else {
-            res.status(404).json({ message: 'Complaint not found' });
+        if (!complaint) {
+            return res.status(404).json({ message: 'Complaint not found' });
         }
+
+        if (complaint.department !== req.user.department) {
+            return res.status(403).json({ message: 'Not authorized to update this complaint' });
+        }
+
+        if (status === 'Rejected' && !remark) {
+            return res.status(400).json({ message: 'Remark is required when rejecting a complaint' });
+        }
+
+        complaint.status = status || complaint.status;
+        complaint.remark = remark || complaint.remark;
+
+        const updatedComplaint = await complaint.save();
+        res.json(updatedComplaint);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

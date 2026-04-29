@@ -31,10 +31,24 @@ const seedData = async () => {
                 role: 'citizen',
             },
             {
-                name: 'Admin User',
-                email: 'admin@example.com',
-                password: 'admin',
+                name: 'Roads Admin',
+                email: 'roads-admin@example.com',
+                password: 'admin123',
                 role: 'admin',
+                department: 'Roads',
+            },
+            {
+                name: 'Water Admin',
+                email: 'water-admin@example.com',
+                password: 'admin123',
+                role: 'admin',
+                department: 'Water',
+            },
+            {
+                name: 'Super Admin',
+                email: 'superadmin@example.com',
+                password: 'superadmin123',
+                role: 'superadmin',
             },
         ]);
 
@@ -44,21 +58,27 @@ const seedData = async () => {
         const citizen2 = users[1];
 
         // Create Complaints
+        const roadsAdmin = users.find((u) => u.email === 'roads-admin@example.com');
+        const waterAdmin = users.find((u) => u.email === 'water-admin@example.com');
+
         const complaints = await Complaint.create([
             {
                 user: citizen1._id,
                 category: 'Road',
+                department: 'Roads',
                 description: 'Big pothole on Main Street near the grocery store.',
+                assignedTo: roadsAdmin?._id,
                 location: {
                     latitude: 40.7128,
                     longitude: -74.0060,
                 },
                 status: 'Pending',
-                image: '', // Optional: Add a real path if you have sample images
+                image: '',
             },
             {
                 user: citizen1._id,
                 category: 'Garbage',
+                department: 'Sanitation',
                 description: 'Garbage not collected for 3 days in my area.',
                 location: {
                     latitude: 40.7138,
@@ -69,13 +89,15 @@ const seedData = async () => {
             {
                 user: citizen2._id,
                 category: 'Street Light',
+                department: 'Electricity',
                 description: 'Street light flickering constantly in front of house #45.',
+                assignedTo: waterAdmin?._id,
                 location: {
                     latitude: 40.7148,
                     longitude: -74.0080,
                 },
                 status: 'Resolved',
-                resolutionNote: 'Bulb replaced.',
+                remark: 'Bulb replaced.',
             },
         ]);
 
